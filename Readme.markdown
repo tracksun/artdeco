@@ -12,7 +12,7 @@ Decorate a model in your controller:
 ```ruby
   def show
     article = Article.find(params[:id])
-    @article = TracksGrid::Decorator.decorate(article, self)
+    @article = Artdeco::Decorator.decorate(article, self)
   end
 ```
 
