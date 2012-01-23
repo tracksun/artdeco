@@ -50,6 +50,7 @@ module Artdeco
 
     def decorate( model, decorator_classes = nil)
       return nil if model.nil?
+      return model.map{|m|decorate m , decorator_classes} if model.respond_to? :map
       decorator_classes ||= @decorator_classes || default_decorator_class(model)
       decorator_classes.each{|dc|model.extend dc}
       h = view_context

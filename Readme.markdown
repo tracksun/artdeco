@@ -26,7 +26,7 @@ module ArticleDecorator
   end
 end
 ```
-and your views may use the decoratored model: 
+and your views may use the decorated model: 
 
 ```ruby
 # app/views/articles/show.html.haml
