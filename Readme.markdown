@@ -14,6 +14,11 @@ Decorate a model in your controller:
     article = Article.find(params[:id])
     @article = Artdeco::Decorator.decorate(article, self)
   end
+
+  def index
+    articles = Article.all
+    @articles = Artdeco::Decorator.decorate(articles, self)
+  end
 ```
 
 Then @article will be extended by module ArticleDecorator
