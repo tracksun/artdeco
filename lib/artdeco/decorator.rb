@@ -1,15 +1,38 @@
 module Artdeco
 
-  class Decorator
-    attr_reader :params, :view_context
-    alias_method :h, :view_context
+  module DecoratorMethods
+
+    def decorate( model, decorator_classes = nil)
+      return nil if model.nil?
+      decorator_classes ||= @decorator_classes || default_decorator_class(model)
+      decorator_classes.each{|dc|model.extend dc}
+      h = self.h
+      model.define_singleton_method(:h){h}
+      model.extend DecoratorMethods
+      model
+    end
     
+    private
+    def default_decorator_class(model)
+      @_decorator_classes_cache ||= {} 
+      [@_decorator_classes_cache.fetch(model.class){"#{model.class}Decorator".constantize rescue nil}].compact
+    end
+
+  end
+
+  class Decorator
+
     class << self
       def decorate(model, *args)
         self.new(args).decorate(model)
       end
     end
 
+    include DecoratorMethods
+
+    attr_reader :params, :view_context
+    alias_method :h, :view_context
+    
     # Args may be either the params hash of the request
     # or an object which responds to :params and optionaly to :view_context, e.g. a controller instance
     # If a view_context is given it will be accessible in various blocks by calling :h
@@ -48,21 +71,6 @@ module Artdeco
       end
     end
 
-    def decorate( model, decorator_classes = nil)
-      return nil if model.nil?
-      return model.map{|m|decorate m , decorator_classes} if model.respond_to? :map
-      decorator_classes ||= @decorator_classes || default_decorator_class(model)
-      decorator_classes.each{|dc|model.extend dc}
-      h = view_context
-      model.define_singleton_method(:h){h}
-      model
-    end
-    
-    private
-    def default_decorator_class(model)
-      @cache ||= {} 
-      [@cache.fetch(model.class){"#{model.class}Decorator".constantize rescue nil}].compact
-    end
-      
   end
+
 end
