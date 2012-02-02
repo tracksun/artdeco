@@ -2,10 +2,10 @@ module Artdeco
 
   module DecoratorMethods
 
-    def decorate( model, decorator_classes = nil)
+    def decorate model, *decorator_classes
       return nil if model.nil?
-      decorator_classes ||= @decorator_classes || default_decorator_class(model)
-      decorator_classes.each{|dc|model.extend dc}
+      decorator_classes = @decorator_classes || default_decorator_class(model) if decorator_classes.empty?
+      [decorator_classes].flatten.each{|dc|model.extend dc}
       h = self.h
       model.define_singleton_method(:h){h}
       model.extend DecoratorMethods
@@ -13,7 +13,7 @@ module Artdeco
     end
     
     private
-    def default_decorator_class(model)
+    def default_decorator_class model 
       @_decorator_classes_cache ||= {} 
       [@_decorator_classes_cache.fetch(model.class){"#{model.class}Decorator".constantize rescue nil}].compact
     end
