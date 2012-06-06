@@ -47,7 +47,7 @@ Modules for decoration may be given explicitly:
 
     # or
 
-    Artdeco.decorate(user, self, decorator: [ Customer, Admin ] )
+    Artdeco.decorate(user, self, decorators: [ Customer, Admin ] )
 
 Also works for enumerations (anything which responds to :map):
 
