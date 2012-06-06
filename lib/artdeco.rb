@@ -8,6 +8,7 @@ module Artdeco
 
     def decorate model, *decorator_classes
       return nil if model.nil?
+      return model.map{|m| decorate(m,*decorator_classes)} if model.respond_to?(:map)
       decorator_classes = @decorator_classes || default_decorator_class(model) if decorator_classes.empty?
       [decorator_classes].flatten.each{|dc|model.extend dc}
       h = self.h

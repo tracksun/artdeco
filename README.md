@@ -49,6 +49,9 @@ Modules for decoration may be given explicitly:
 
     Artdeco.decorate(user, self, decorator: [ Customer, Admin ] )
 
+Also works for enumerations (anything which responds to :map):
+    @articles = Article.all
+    Artdeco.decorate(@articles, self)
 
 For conveniance decorated objects may decorate other objects:
 

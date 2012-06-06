@@ -124,4 +124,15 @@ class ArtdecoTest < MiniTest::Unit::TestCase
      assert_equal FooHelper, h.class
      assert_respond_to h, :hi
   end
+
+  def test_decorate_enums
+     models = [Foo.new, Foo.new]
+     Artdeco.decorate models, view_context: FooHelper.new, params: {}
+
+     models.each do |model|
+       assert_respond_to model, :h
+       assert_respond_to model, :ho
+       assert_respond_to model, :decorate
+     end
+  end
 end
