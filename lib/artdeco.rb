@@ -20,7 +20,17 @@ module Artdeco
     private
     def default_decorator_class model 
       @_decorator_classes_cache ||= {} 
-      [@_decorator_classes_cache.fetch(model.class){"::#{model.class}Decorator".constantize rescue nil}].compact
+      [@_decorator_classes_cache.fetch(model.class){decorator_class_for model}].compact
+    end
+
+    def decorator_class_for model
+      clazz = model.class
+      while clazz != Object 
+        result = ("::#{clazz}Decorator".constantize rescue nil)
+        return result if result
+        clazz = clazz.superclass
+      end
+      nil
     end
 
   end
