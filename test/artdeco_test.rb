@@ -29,11 +29,28 @@ class ArtdecoTest < MiniTest::Unit::TestCase
     end
   end
 
-  class FakeController
+  class X
+    def x
+    end
 
+    def self.cx
+    end
+  end
+
+  module XDecorator
+    def y
+    end
+
+    module ClassMethods
+      def cy
+      end
+    end
+  end
+
+  class FakeController
     def view_context
       @view_context ||= FooHelper.new
-    end 
+    end
 
     def params
       {}
@@ -43,7 +60,7 @@ class ArtdecoTest < MiniTest::Unit::TestCase
       view_content.send *args
     end
   end
-  
+
   def test_decorate_model
     model = Foo.new
     controller = FakeController.new
@@ -151,4 +168,16 @@ class ArtdecoTest < MiniTest::Unit::TestCase
     h = model.h
     assert_equal FooHelper, h.class
   end
+
+
+  def test_decorate_class_methods
+    model = X.new
+    assert_respond_to model, :x
+    assert_respond_to model.class, :cx
+
+    dmodel = Artdeco.decorate model
+    assert_respond_to dmodel, :y
+    assert_respond_to dmodel.class, :cy
+  end
+
 end

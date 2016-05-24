@@ -6,16 +6,16 @@ module Artdeco
 
   module DecoratorMethods
 
-    def decorate model, *decorator_modulees
+    def decorate model, *decorator_modules
       return nil if model.nil?
 
-      return model.map{|m| decorate(m,*decorator_modulees)} if model.respond_to?(:map)
+      return model.map{|m| decorate(m,*decorator_modules)} if model.respond_to?(:map)
 
       decorator_modules = @decorator_modules || default_decorator_module(model) if decorator_modules.empty?
       [decorator_modules].flatten.each do |decorator_module|
         model.extend decorator_module
-        if decorator_module.const_defined? :ClassMethods
-          model.class.extend module.const_get(:ClassMethods)
+        if decorator_module.const_defined?(:ClassMethods)
+          model.class.extend(decorator_module.const_get(:ClassMethods))
         end
       end
 
