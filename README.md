@@ -2,10 +2,10 @@
 
 [![Build History][2]][1]
 
-[1]: http://travis-ci.org/tracksun/artdeco
-[2]: https://secure.travis-ci.org/tracksun/artdeco.png?branch=master
+[1]: http://travis-ci.org/tsonntag/artdeco
+[2]: https://secure.travis-ci.org/tsonntag/artdeco.png?branch=master
 
-Decorators for Rails 
+Decorators for Rails
 
 * extend an object with given classes (default is \<object.class\>Decorator, if defined)
 * make helpers accessible in object via :h
@@ -18,7 +18,7 @@ Decorate a model in your controller:
       article = Article.find(params[:id])
       @article = Artdeco.decorate(article, self)
     end
- 
+
     def index
       articles = Article.all
       @articles = Artdeco.decorate(articles, self)
@@ -33,10 +33,10 @@ and has access to your helpers via :h
       end
     end
 
-and your views may use the decorated model: 
+and your views may use the decorated model:
 
     # app/views/articles/show.html.haml
-    %h1 
+    %h1
       Article
       = @article.image
 
